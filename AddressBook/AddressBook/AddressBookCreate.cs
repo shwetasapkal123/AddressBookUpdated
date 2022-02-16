@@ -12,6 +12,8 @@ namespace AddressBook
         public void AddContact(Contact newcontact)
         {
             AddressList.Add(newcontact);
+            Console.WriteLine("Added Successfully");
+            Display();
         }
         public void Editexistingcontact()
         {
@@ -68,6 +70,22 @@ namespace AddressBook
                         default:
                             break;
                     }
+                }
+            }
+        }
+        public void Deletecontact()
+        {
+            Console.WriteLine("Enter first name you want delete");
+            string name = Console.ReadLine();
+            Contact delete = new Contact();
+            foreach (var contact in AddressList)
+            {
+                if (contact.firstname == name)
+                {
+                    AddressList.Remove(contact);
+                    Console.WriteLine(name + " contact is deleted");
+                    Display();
+                    break;
                 }
             }
         }
