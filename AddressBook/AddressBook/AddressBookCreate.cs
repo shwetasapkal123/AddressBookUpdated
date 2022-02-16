@@ -12,8 +12,6 @@ namespace AddressBook
         public void AddContact(Contact newcontact)
         {
             AddressList.Add(newcontact);
-            Console.WriteLine("Added Successfully");
-            Display();
         }
         public void Editexistingcontact()
         {
@@ -84,7 +82,6 @@ namespace AddressBook
                 {
                     AddressList.Remove(contact);
                     Console.WriteLine(name + " contact is deleted");
-                    Display();
                     break;
                 }
             }
