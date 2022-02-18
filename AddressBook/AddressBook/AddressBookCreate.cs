@@ -8,130 +8,122 @@ namespace AddressBook
 {
     public class AddressBookCreate
     {
-        List<Contact> AddressList = new List<Contact>();
-        Dictionary<string, List<Contact>> MultipleAddressbook = new Dictionary<string, List<Contact>>();
+        static MainAddressBookof_Contact addressBookMain = new MainAddressBookof_Contact();
+        static Dictionary<string, MainAddressBookof_Contact> addressBook = new Dictionary<string, MainAddressBookof_Contact>();
+        //created List of class Type.
+        public void ReadInput()
+        {
+            bool CONTINUE = true;
 
-        public void AddContact(Contact newcontact)
-        {
-            AddressList.Add(newcontact);
-            MultipleAddressbook.Add(newcontact.firstname, AddressList);
+            //the loop continues until the user exit from program.
+            while (CONTINUE)
+            {
+                Console.WriteLine("Enter your choice:");
+                Console.WriteLine("1.Add Address Book");
+                Console.WriteLine("2.Add contacts");
+                Console.WriteLine("3.Display");
+                Console.WriteLine("4.Edit Details");
+                Console.WriteLine("5.Delete Person");
+                Console.WriteLine("6.Add Multiple Address Book");
+                Console.WriteLine("7.Delete Any Address Book");
+                Console.WriteLine("0.Exit");
+                int choice = Convert.ToInt32(Console.ReadLine());
+                switch (choice)
+                {
+                    case 1:
+                        AddressBookCreate.AddBook();
+                        break;
+                    case 2:
+                        AddDetails(AddressBookCreate.BookName(addressBook));
+                        break;
+                    case 3:
+                        addressBookMain = AddressBookCreate.BookName(addressBook);
+                        addressBookMain.DisplayContact();
+                        break;
+                    case 4:
+                        addressBookMain = AddressBookCreate.BookName(addressBook);
+                        Console.WriteLine("Enter the first name of person");
+                        string name = Console.ReadLine();
+                        addressBookMain.EditContact(name);
+                        break;
+                    case 5:
+                        addressBookMain = AddressBookCreate.BookName(addressBook);
+                        Console.WriteLine("Enter the first name of person");
+                        string dName = Console.ReadLine();
+                        addressBookMain.DeleteContact(dName);
+                        break;
+                    case 6:
+                        AddMultipleAddressBook();
+                        break;
+                    case 7:
+                        Console.WriteLine("Enter address book name to delete:");
+                        string addressBookName = Console.ReadLine();
+                        addressBook.Remove(addressBookName);
+                        break;
+                    case 0:
+                        CONTINUE = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-        public void Editexistingcontact()
+        //Method to create a AddressBook in Dictionary
+        public static void AddBook()
         {
-            Console.WriteLine("Enter first name of person you want to edit");
+            Console.WriteLine("Enter address book name:");
+            string addBookName = Console.ReadLine();
+            addressBook.Add(addBookName, addressBookMain);
+        }
+        /// <summary>
+        /// This method is used to add a new contact.
+        /// </summary>
+        /// <param name="addressBookMain"></param>
+        public static void AddDetails(MainAddressBookof_Contact addressMain)
+        {
+            Console.WriteLine("Enter first Name");
+            string firstName = Console.ReadLine();
+            Console.WriteLine("Enter Last Name");
+            string lastName = Console.ReadLine();
+            Console.WriteLine("Enter Address");
+            string address = Console.ReadLine();
+            Console.WriteLine("Enter City");
+            string city = Console.ReadLine();
+            Console.WriteLine("Enter State");
+            string state = Console.ReadLine();
+            Console.WriteLine("Enter Zipcode");
+            long zipCode = Convert.ToInt64(Console.ReadLine());
+            Console.WriteLine("Enter Phone Number");
+            long phoneNumber = Convert.ToInt64(Console.ReadLine());
+            Console.WriteLine("Enter Email");
+            string email = Console.ReadLine();
+
+            addressMain.AddContactDetails(firstName, lastName, address, city, state, zipCode, phoneNumber, email);
+        }
+        //Method to Add Multiple Contact
+        public void AddMultipleAddressBook()
+        {
+            Console.WriteLine("How many AddressBook,you want to Add");
+            int cNumber = int.Parse(Console.ReadLine());
+            for (int i = 1; i <= cNumber; i++)
+            {
+                AddressBookCreate.AddBook();
+            }
+            Console.WriteLine("All Address Book Added successfully! \n");
+        }
+        /// <summary>
+        /// method to find the address of particular address book.
+        /// </summary>
+        /// <param name="addBook"></param>
+        /// <returns></returns>
+        public static MainAddressBookof_Contact BookName(Dictionary<string, MainAddressBookof_Contact> addBook)
+        {
+            addressBook = addBook;
+            Console.WriteLine("Enter address book name:");
             string name = Console.ReadLine();
-            foreach (var contact in AddressList)
-            {
-                if (contact.firstname == name)
-                {
-                    Console.WriteLine("Enter number : \n 1. First name \n 2. Last name \n 3. Address \n 4. City \n 5. State \n 6. Zip code \n 7. Phone Number \n 8. Email");
-                    int choice = Convert.ToInt32(Console.ReadLine());
-                    switch (choice)
-                    {
-                        case 1:
-                            Console.WriteLine("Enter new firstname");
-                            string first = Console.ReadLine();
-                            contact.firstname = first;
-                            break;
-                        case 2:
-                            Console.WriteLine("Enter new lastname");
-                            string last = Console.ReadLine();
-                            contact.lastname = last;
-                            break;
-                        case 3:
-                            Console.WriteLine("Enter new address");
-                            string address = Console.ReadLine();
-                            contact.address = address;
-                            break;
-                        case 4:
-                            Console.WriteLine("Enter new city");
-                            string city = Console.ReadLine();
-                            contact.city = city;
-                            break;
-                        case 5:
-                            Console.WriteLine("Enter new state");
-                            string state = Console.ReadLine();
-                            contact.state = state;
-                            break;
-                        case 6:
-                            Console.WriteLine("Enter new zip");
-                            string zip = Console.ReadLine();
-                            contact.zip = zip;
-                            break;
-                        case 7:
-                            Console.WriteLine("Enter new phonenumber");
-                            string phone = Console.ReadLine();
-                            contact.phonenumber = phone;
-                            break;
-                        case 8:
-                            Console.WriteLine("Enter new emailid");
-                            string email = Console.ReadLine();
-                            contact.emailid = email;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-        public void Deletecontact()
-        {
-            Console.WriteLine("Enter first name you want delete");
-            string name = Console.ReadLine();
-            Contact delete = new Contact();
-            foreach (var contact in AddressList)
-            {
-                if (contact.firstname == name)
-                {
-                    AddressList.Remove(contact);
-                    Console.WriteLine(name + "\n contact is deleted\n");
-                    break;
-                }
-            }
-        }
-        public void Display()
-        {
-            foreach (var contact in AddressList)
-            {
-                Console.WriteLine("\nfirstname: " + contact.firstname + "\nlastname: " + contact.lastname + "\naddress: " + contact.address + "\ncity: " + contact.city + "\nstate: " + contact.state + "\nzip: " + contact.zip + "\nphoneno: " + contact.phonenumber + "\nemail: " + contact.emailid);
-            }
-        }
-        public void AddUniqueContact(string uniquename)
-        {
-            foreach (var contact in AddressList)
-            {
-                if (contact.firstname.Equals(uniquename))
-                {
-                    Contact multiplecontact = new Contact();
-
-                    Console.WriteLine("Contact already exist , Enter unique name");
-                    multiplecontact.firstname = Console.ReadLine();
-                    multiplecontact.lastname = Console.ReadLine();
-                    multiplecontact.address = Console.ReadLine();
-                    multiplecontact.city = Console.ReadLine();
-                    multiplecontact.state = Console.ReadLine();
-                    multiplecontact.zip = Console.ReadLine();
-                    multiplecontact.phonenumber = Console.ReadLine();
-                    multiplecontact.emailid = Console.ReadLine();
-                    AddContact(multiplecontact);
-                }
-            }
-        }
-        public void DisplayUniqueContacts()
-        {
-            Console.WriteLine("Enter firstname to display that contact details");
-            string name = Console.ReadLine().ToLower();
-            foreach (var contacts in MultipleAddressbook)
-            {
-                if (contacts.Key == name)
-                {
-                    foreach (var data in contacts.Value)
-                    {
-                        Console.WriteLine("The Contact details of " + data.firstname + "are : \n" + data.firstname + " " + data.lastname + " " + data.address + " " + data.city + " " + data.state + " " + data.zip + " " + data.phonenumber + " " + data.emailid);
-                    }
-                }
-
-            }
+            MainAddressBookof_Contact address = addressBook[name];
+            return address;
         }
     }
 }
+
