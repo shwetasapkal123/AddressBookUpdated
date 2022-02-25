@@ -198,11 +198,49 @@ namespace AddressBook
         /// count number of person by city or state
         /// </summary>
         /// <param name="dictionary"></param>
-        public static void CountPerson(Dictionary<string, List<Contact>> dictionary)
+        public static void CountPerson(Dictionary<string, List<Contact>> dictionary, string name)
         {
-            foreach (var person in dictionary)
+            if (dictionary.ContainsKey(name))
             {
-                Console.WriteLine("Number of person {0}:", person.Value.Count);
+                foreach (var person in dictionary)
+                {
+                    Console.WriteLine("Number of person {0}", person.Value.Count);
+                    break;
+                }
+            }
+        }
+        /// <summary>
+        /// Sort the address Book by city, state and Zip.
+        /// </summary>
+        /// <param name="dictionary">The dictionary.</param>
+        public static void SortData(Dictionary<string, List<Contact>> dictionary)
+        {
+            //store the result inthe list and display the result
+            List<Contact> list = new List<Contact>();
+            foreach (var data in dictionary)
+            {
+                foreach (var item in data.Value)
+                {
+                    list.Add(item);
+                }
+            }
+            Console.WriteLine("\nDisplaying the list based on zipcode");
+            //display the sorted value based on city
+            foreach (var item in list.OrderBy(detail => detail.zipCode))
+            {
+                item.Display();
+            }
+            Console.WriteLine("\nDisplaying the list based on state");
+            //display the sorted value based on city
+            foreach (var item in list.OrderBy(detail => detail.state))
+            {
+                item.Display();
+            }
+            Console.WriteLine("\nDisplaying the list based on city");
+            //display the sorted value based on city
+            foreach (var item in list.OrderBy(detail => detail.city))
+            {
+                item.Display();
             }
         }
     }

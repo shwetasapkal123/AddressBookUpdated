@@ -32,6 +32,7 @@ namespace AddressBook
                 Console.WriteLine("9.View person by city or state");
                 Console.WriteLine("10.Count person by city or state");
                 Console.WriteLine("11.Sort the Address book");
+                Console.WriteLine("12.Sort by state city or zip");
                 Console.WriteLine("0.Exit");
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
@@ -74,10 +75,12 @@ namespace AddressBook
                         MainAddressBookof_Contact.PrintList(stateDictionary);
                         break;
                     case 10:
-                        Console.WriteLine("City");
-                        MainAddressBookof_Contact.CountPerson(cityDictionary);
-                        Console.WriteLine("State");
-                        MainAddressBookof_Contact.CountPerson(stateDictionary);
+                        Console.WriteLine("Enter City Name");
+                        string city = Console.ReadLine();
+                        MainAddressBookof_Contact.CountPerson(cityDictionary, city);
+                        Console.WriteLine("Enter State Name");
+                        string state = Console.ReadLine();
+                        MainAddressBookof_Contact.CountPerson(stateDictionary, state);
                         break;
                     case 11:
                         Console.WriteLine("AddressBook after sorting");
@@ -85,6 +88,10 @@ namespace AddressBook
                         {
                             Console.WriteLine("{0}", data.Key);
                         }
+                        break;
+                    case 12:
+                        //displaying the sorted records based on city,state,zipcode
+                        MainAddressBookof_Contact.SortData(cityDictionary);
                         break;
                     case 0:
                         CONTINUE = false;
@@ -144,11 +151,23 @@ namespace AddressBook
         /// <returns></returns>
         public static MainAddressBookof_Contact BookName(Dictionary<string, MainAddressBookof_Contact> addBook)
         {
-            addressBook = addBook;
-            Console.WriteLine("Enter address book name:");
-            string name = Console.ReadLine();
-            MainAddressBookof_Contact address = addressBook[name];
-            return address;
+            try
+            {
+                addressBook = addBook;
+                Console.WriteLine("Enter address book name:");
+                string name = Console.ReadLine();
+                MainAddressBookof_Contact address = addressBook[name];
+                return address;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                addressBook = addBook;
+                Console.WriteLine("Enter address book name:");
+                string name = Console.ReadLine();
+                MainAddressBookof_Contact address = addressBook[name];
+                return address;
+            }
         }
     }
 }
